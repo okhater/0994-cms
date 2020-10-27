@@ -1,12 +1,7 @@
 import React, {createRef} from "react";
 import AceEditor from "react-ace";
-import "ace-builds/src-noconflict/mode-html";
-import "ace-builds/src-noconflict/mode-css";
-import "ace-builds/src-noconflict/mode-javascript";
-import "ace-builds/src-noconflict/theme-vibrant_ink";
-import "emmet-core"
-import "ace-builds/src-noconflict/ext-emmet"
-export class AddPage extends React.Component {
+
+export class EditPage extends React.Component{
     constructor() {
         super();
         this.htmlEditor = createRef();
@@ -14,42 +9,21 @@ export class AddPage extends React.Component {
         this.jsEditor = createRef();
         this.handleSave = this.handleSave.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.state = {
-            name: "",
-            title: ""
-        }
     }
-
-    handleSave(){
-        let formData = new FormData();
-        formData.append('name', this.state.name);
-        formData.append('title', this.state.title);
-        formData.append('html',this.htmlEditor.current.editor.getValue())
-        formData.append('css',this.cssEditor.current.editor.getValue());
-        formData.append('js',this.jsEditor.current.editor.getValue());
-        fetch("http://okchurch.okhater.beget.tech/addPage",{
-            method: 'POST',
-            body: formData
-        })
-            .then(response=>response.json())
-            .then(result=>console.log(result))
-    }
-
     componentDidMount() {
-        console.log("Вызвана функция componentDidMount")
+        const uri = window.location.pathname.split("/");
+        const pageId = uri[uri.length-1];
+        // fetch()
+        this.htmlEditor.current.editor.setValue("а тут что-то из базы данных")
     }
-
-    handleInputChange(event){
-        const target = event.target;
-        const value = target.value;
-        const name = target.name;
-        this.setState({
-            [name]: value
-        })
+    handleSave(){
+        // Отправились изменнёные значения на сервер
     }
+    handleInputChange(){
 
+    }
     render() {
-        return<div>
+        return <div>
             <nav>
                 <div className="nav nav-tabs" id="nav-tab" role="tablist">
                     <a className="nav-link active" id="nav-html-tab" data-toggle="tab" href="#nav-html" role="tab"
@@ -100,7 +74,6 @@ export class AddPage extends React.Component {
                         }}
                     />
                 </div>
-
                 <div className="tab-pane fade" id="nav-extraHTML" role="tabpanel" aria-labelledby="nav-extraHTML-tab">
                     <div className="col-10 mx-auto my-3">
                         <div className="mb-3">
